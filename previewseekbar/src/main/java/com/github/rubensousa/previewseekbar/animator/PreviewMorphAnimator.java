@@ -46,10 +46,10 @@ public class PreviewMorphAnimator implements PreviewAnimator {
     private static final int TRANSLATION_SHOW_DURATION = 100;
     private static final int TRANSLATION_HIDE_DURATION = 100;
 
-    private long showTranslationDuration;
-    private long morphShowDuration;
-    private long hideTranslationDuration;
-    private long morphHideDuration;
+    private final long showTranslationDuration;
+    private final long morphShowDuration;
+    private final long hideTranslationDuration;
+    private final long morphHideDuration;
     private boolean isShowing;
     private boolean isHiding;
     private boolean isMovingToShow;
@@ -226,7 +226,6 @@ public class PreviewMorphAnimator implements PreviewAnimator {
 
         float startRadius = previewView.getHeight() / 2f;
         float endRadius = getRadius(previewView);
-        long duration = morphShowDuration;
 
         morphAnimator = ViewAnimationUtils.createCircularReveal(previewView,
                 getCenterX(previewView),
@@ -235,7 +234,7 @@ public class PreviewMorphAnimator implements PreviewAnimator {
                 endRadius);
         morphAnimator.setTarget(previewView);
         morphAnimator.setInterpolator(new AccelerateInterpolator());
-        morphAnimator.setDuration(duration);
+        morphAnimator.setDuration(morphShowDuration);
         morphAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -264,14 +263,13 @@ public class PreviewMorphAnimator implements PreviewAnimator {
 
         float startRadius = getRadius(previewView);
         float endRadius = previewView.getHeight() / 2f;
-        long duration = morphHideDuration;
 
         morphAnimator = ViewAnimationUtils.createCircularReveal(previewView,
                 getCenterX(previewView),
                 getCenterY(previewView),
                 startRadius,
                 endRadius);
-        morphAnimator.setDuration(duration);
+        morphAnimator.setDuration(morphHideDuration);
         morphAnimator.setInterpolator(new AccelerateInterpolator());
         morphAnimator.setTarget(previewView);
         morphAnimator.addListener(new AnimatorListenerAdapter() {
@@ -331,12 +329,7 @@ public class PreviewMorphAnimator implements PreviewAnimator {
             translationAnimator.cancel();
         }
         translationAnimator = ValueAnimator.ofFloat(morphView.getX(), toX);
-        translationAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                morphView.setX((float) animation.getAnimatedValue());
-            }
-        });
+        translationAnimator.addUpdateListener(animation -> morphView.setX((float) animation.getAnimatedValue()));
         translationAnimator.setDuration(duration);
         translationAnimator.setInterpolator(new AccelerateInterpolator());
         translationAnimator.start();

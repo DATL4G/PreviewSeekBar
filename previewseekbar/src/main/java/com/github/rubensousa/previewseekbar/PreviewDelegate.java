@@ -39,9 +39,9 @@ public class PreviewDelegate {
     private FrameLayout previewView;
     private PreviewLoader previewLoader;
     private PreviewAnimator animator;
-    private PreviewBar previewBar;
-    private List<PreviewBar.OnScrubListener> scrubListeners;
-    private List<PreviewBar.OnPreviewVisibilityListener> visibilityListeners;
+    private final PreviewBar previewBar;
+    private final List<PreviewBar.OnScrubListener> scrubListeners;
+    private final List<PreviewBar.OnPreviewVisibilityListener> visibilityListeners;
 
     private boolean showingPreview;
     private boolean previewViewAttached;

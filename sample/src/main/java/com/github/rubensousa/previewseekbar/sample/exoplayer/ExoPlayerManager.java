@@ -26,6 +26,7 @@ import com.github.rubensousa.previewseekbar.PreviewLoader;
 import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar;
 import com.github.rubensousa.previewseekbar.sample.glide.GlideApp;
 import com.github.rubensousa.previewseekbar.sample.glide.GlideThumbnailTransformation;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
@@ -36,15 +37,15 @@ public class ExoPlayerManager implements PreviewLoader, PreviewBar.OnScrubListen
 
     private ExoPlayerMediaSourceBuilder mediaSourceBuilder;
     private PlayerView playerView;
-    private SimpleExoPlayer player;
+    private ExoPlayer player;
     private PreviewTimeBar previewTimeBar;
     private String thumbnailsUrl;
     private ImageView imageView;
     private boolean resumeVideoOnPreviewStop;
-    private Player.EventListener eventListener = new Player.EventListener() {
+    private Player.Listener eventListener = new Player.Listener() {
         @Override
-        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            if (playbackState == Player.STATE_READY && playWhenReady) {
+        public void onPlaybackStateChanged(int playbackState) {
+            if (playbackState == Player.STATE_READY) {
                 previewTimeBar.hidePreview();
             }
         }
@@ -111,10 +112,10 @@ public class ExoPlayerManager implements PreviewLoader, PreviewBar.OnScrubListen
         playerView.setControllerShowTimeoutMs(15000);
     }
 
-    private SimpleExoPlayer createPlayer() {
-        SimpleExoPlayer player = new SimpleExoPlayer.Builder(playerView.getContext()).build();
+    private ExoPlayer createPlayer() {
+        ExoPlayer player = new ExoPlayer.Builder(playerView.getContext()).build();
         player.setPlayWhenReady(true);
-        player.prepare(mediaSourceBuilder.getMediaSource(false));
+        player.addMediaItem(mediaSourceBuilder.getMediaSource());
         player.addListener(eventListener);
         return player;
     }

@@ -31,8 +31,8 @@ public class PreviewFadeAnimator implements PreviewAnimator {
 
     private static final int FADE_DURATION = 350;
 
-    private long showDuration;
-    private long hideDuration;
+    private final long showDuration;
+    private final long hideDuration;
 
     public PreviewFadeAnimator() {
         this(FADE_DURATION, FADE_DURATION);

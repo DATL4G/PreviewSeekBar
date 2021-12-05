@@ -43,12 +43,12 @@ import com.google.android.exoplayer2.ui.TimeBar;
  */
 public class PreviewTimeBar extends DefaultTimeBar implements PreviewBar {
 
-    private PreviewDelegate delegate;
+    private final PreviewDelegate delegate;
     private int scrubProgress;
     private int duration;
     private int scrubberColor;
-    private int previewId;
-    private int scrubberPadding;
+    private final int previewId;
+    private final int scrubberPadding;
 
     public PreviewTimeBar(Context context, AttributeSet attrs) {
         super(context, attrs);
